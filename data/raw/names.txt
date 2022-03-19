@@ -1,0 +1,107 @@
+Kod stacji
+Nazwa stacji
+Rok
+Miesiąc
+Dzień
+Godzina
+Wysokość podstawy chmur CL CM szyfrowana [kod]
+Status pomiaru HPOD
+Wysokość podstawy niższej  [m]
+Status pomiaru HPON
+Wysokość podstawy wyższej [m]
+Status pomiaru HPOW
+Wysokość podstawy tekstowy [opis]
+Pomiar przyrzadem 1 (niższa) [P]
+Pomiar przyrzadem 2 (wyższa) [P]
+Widzialność  [kod]
+Status pomiaru WID
+Widzialność operatora [m]
+Status pomiaru WIDO
+Widzialność automat [m]
+Status pomiaru WIDA
+Zachmurzenie ogólne [oktanty]
+Status pomiaru NOG
+Kierunek wiatru  [°]
+Status pomiaru KRWR
+Prędkość wiatru  [m/s]
+Status pomiaru FWR
+Poryw wiatru  [m/s]
+Status pomiaru PORW
+Temperatura powietrza [°C]
+Status pomiaru TEMP
+Temperatura termometru zwilżonego [°C]
+Status pomiaru TTZW
+Wskaźnik wentylacji [W/N]
+Wskaźnik lodu       [L/W]
+Ciśnienie pary wodnej [hPa]
+Status pomiaru CPW
+Wilgotność względna [%]
+Status pomiaru WLGW
+Temperatura punktu rosy [°C]
+Status pomiaru TPTR
+Ciśnienie na poziomie stacji [hPa]
+Status pomiaru PPPS
+Ciśnienie na poziomie morza [hPa]
+Status pomiaru PPPM
+Charakterystyka tendencji [kod]
+Wartość tendencji [wartość]
+Status pomiaru APP
+Opad za 6 godzin [mm]
+Status pomiaru WO6G
+Rodzaj opadu za 6 godzin [kod]
+Status pomiaru ROPT
+Pogoda bieżąca [kod]
+Pogoda ubiegła [kod]
+Zachmurzenie niskie [oktanty]
+Status pomiaru CLCM
+Chmury CL [kod]
+Status pomiaru CHCL
+Chmury CL tekstem
+Chmury CM [kod]
+Status pomiaru CHCM
+Chmury CM tekstem
+Chmury CH [kod]
+Status pomiaru CHCH
+Chmury CH tekstem
+Stan gruntu [kod]
+Status pomiaru SGRN
+Niedosyt wilgotności [hPa}
+Status pomiaru DEFI
+Usłonecznienie
+Status pomiaru USLN
+Wystąpienie rosy [0/1]
+Status pomiaru ROSW
+Poryw maksymalny za okres WW [m/s]
+Status pomiaru PORK
+Godzina wystąpienia porywu
+Minuta wystąpienia porywu
+Temperatura gruntu -5 [°C]
+Status pomiaru TG05
+Temperatura gruntu -10 [°C]
+Status pomiaru TG10
+Temperatura gruntu -20 [°C]
+Status pomiaru TG20
+Temperatura gruntu -50 [°C]
+Status pomiaru TG50
+Temperatura gruntu -100 [°C]
+Status pomiaru TG100
+Temperatura minimalna za 12 godzin  [°C]
+Status pomiaru TMIN
+Temperatura maksymalna za 12 godzin [°C]
+Status pomiaru TMAX
+Temperatura minimalna przy gruncie za 12 godzin [°C]
+Status pomiaru TGMI
+Równoważnik wodny śniegu [mm/cm]
+Status pomiaru RWSN
+Wysokość pokrywy śnieżnej [cm]
+Status pomiaru PKSN
+Wysokość świeżo spadłego śniegu  [cm]
+Status pomiaru HSS
+Wysokość śniegu na poletku [cm]
+Status pomiaru GRSN
+Gatunek śniegu  [kod]
+Ukształtowanie pokrywy [kod]
+Wysokość próbki [cm]
+Status pomiaru HPRO
+Ciężar próbki [g]
+Status pomiaru CIPR

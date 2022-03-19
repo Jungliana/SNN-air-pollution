@@ -8,6 +8,7 @@ authors = ["apiekarz <a.piekarzewicz@stud.elka.pw.edu.pl>"]
 python = "^3.9"
 jupyter = "^1.0.0"
 pandas = "^1.4.1"
+snntorch = "^0.5.1"
 
 [tool.poetry.dev-dependencies]
 
