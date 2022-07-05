@@ -8,6 +8,10 @@ authors = ["apiekarz <a.piekarzewicz@stud.elka.pw.edu.pl>"]
 python = "^3.9"
 jupyter = "^1.0.0"
 pandas = "^1.4.1"
+torch = [
+    {url="https://download.pytorch.org/whl/cu116/torch-1.12.0%2Bcu116-cp39-cp39-win_amd64.whl", platform="win64"},
+    {url="https://download.pytorch.org/whl/cu116/torch-1.12.0%2Bcu116-cp39-cp39-linux_x86_64.whl", platform="linux"}
+]
 snntorch = "^0.5.1"
 scikit-learn = "^1.0.2"
 
