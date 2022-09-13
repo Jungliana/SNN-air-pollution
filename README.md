@@ -1,4 +1,4 @@
-project_name
+SNN-pollution
 ==============================
 
 A short description of the project.
