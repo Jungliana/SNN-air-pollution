@@ -9,16 +9,9 @@ Project Organization
     ├── README.md          <- The top-level README for developers using this project.
     ├── data
     │   ├── processed      <- The final, canonical data sets for modeling.
-    │   └── raw            <- The original, immutable data dump.
+    │   └── raw            <- The original, immutable data dump. 
     │
-    ├── models             <- Trained and serialized models, model predictions, or model summaries
-    │
-    ├── notebooks          <- Jupyter notebooks.
-    │
-    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting
-    │
-    ├── snn-pollution      <- Source code for use in this project.
+    ├── code      <- Source code for use in this project.
     │   ├── __init__.py    <- Makes src a Python module
     │   │
     │   ├── data           <- Scripts to download or generate data
@@ -35,12 +28,7 @@ Project Organization
     │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
     │       └── visualize.py
     │
-    ├── tests              <- Unit tests
-    |
-    ├── poetry.lock        <- Lockfile which allows complete environment reproduction
-    │
-    └── pyproject.toml     <- file with settings and dependencies for the environment
-
+    └── notebooks      <- Jupyter notebooks.
 
 --------
 
