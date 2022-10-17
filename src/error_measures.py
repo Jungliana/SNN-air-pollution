@@ -1,7 +1,7 @@
 import torch
 
 
-def get_accuracy(model, loader, device, pct_close):
+def get_accuracy(model, loader, device, pct_close=0.2):
     correct = 0
     total = 0
     model.eval()
