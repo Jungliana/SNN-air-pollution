@@ -15,13 +15,15 @@ def get_accuracy(model, loader, device, pct_close=0.2):
     return correct / total
 
 
-def get_error_measures(model, loader, device):
+def get_error_measures(model, loader, device, print_e=False):
     model.to(device)
     model.eval()
     targets, preds = gather_predictions(model, loader, device)
     index = calculate_index_of_agreement(targets, preds)
     mse, rmse = calculate_MSE_RMSE(targets, preds)
     mae = calculate_MAE(targets, preds)
+    if print_e:
+        print_measures(mae, mse, rmse, index)
     return mae, mse, rmse, index
 
 
@@ -55,3 +57,7 @@ def calculate_index_of_agreement(targets, preds):
 
 def calculate_MAE(targets, preds):
     return np.abs(targets-preds).mean()
+
+
+def print_measures(mae, mse, rmse, index):
+    print(f'MAE: {mae}, MSE:{mse},\nRMSE: {rmse}, Index of Agreement: {index}')
