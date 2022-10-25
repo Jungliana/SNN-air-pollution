@@ -28,7 +28,6 @@ class TwoLayerLeaky(nn.Module):
         self.fc2 = nn.Linear(num_hidden, num_outputs)
 
     def forward(self, x):
-        # Initialize hidden states at t=0
         mem = self.lif.init_leaky()
 
         for step in range(self.num_steps):
@@ -38,12 +37,30 @@ class TwoLayerLeaky(nn.Module):
         return cur2
 
 
+class TwoLayerSynaptic(nn.Module):
+    def __init__(self, num_inputs, num_hidden, num_outputs, beta=0.85, num_steps=100):
+        super().__init__()
+        self.num_steps = num_steps
+
+        self.fc1 = nn.Linear(num_inputs, num_hidden)
+        self.lif = snn.Synaptic(alpha=0.9, beta=beta)
+        self.fc2 = nn.Linear(num_hidden, num_outputs)
+
+    def forward(self, x):
+        syn, mem = self.lif.init_synaptic()
+
+        for step in range(self.num_steps):
+            cur1 = self.fc1(x)
+            spk, syn, mem = self.lif(cur1, syn, mem)
+            cur2 = self.fc2(spk)
+        return cur2
+
+
 class ThreeLayerLeaky(nn.Module):
     def __init__(self, num_inputs, num_hidden, num_outputs, beta=0.95, num_steps=25):
         super().__init__()
         self.num_steps = num_steps
 
-        # Initialize layers
         self.lin1 = nn.Linear(num_inputs, num_hidden)
         self.bn1 = nn.BatchNorm1d(num_hidden)
         self.relu = nn.LeakyReLU()
@@ -52,7 +69,6 @@ class ThreeLayerLeaky(nn.Module):
         self.lin3 = nn.Linear(num_hidden, num_outputs)
 
     def forward(self, x):
-        # Initialize hidden states at t=0
         mem = self.lif.init_leaky()
 
         for step in range(self.num_steps):
