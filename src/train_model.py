@@ -4,13 +4,13 @@ from tqdm import trange
 from src.error_measures import get_accuracy
 
 
-def prepare_optimizer(model):
-    optimizer = optim.Adam(model.parameters(), lr=1e-3, betas=(0.9, 0.999))
+def prepare_optimizer(model, lr=1e-3):
+    optimizer = optim.Adam(model.parameters(), lr=lr)
     return optimizer
 
 
-def training_loop(model, train_loader, valid_loader, device, num_epochs=50, validation=False):
-    optimizer = prepare_optimizer(model)
+def training_loop(model, train_loader, valid_loader, device, num_epochs=50, lr=1e-3, validation=False):
+    optimizer = prepare_optimizer(model, lr)
     loss_fun = nn.MSELoss()
     model.to(device)  # move model to GPU
 
