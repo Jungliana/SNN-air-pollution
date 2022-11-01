@@ -2,7 +2,7 @@ import numpy as np
 import torch
 
 
-def get_accuracy(model, loader, device, pct_close=0.2):
+def get_accuracy(model, loader, device, pct_close=0.25):
     correct = 0
     total = 0
     model.eval()
@@ -12,7 +12,7 @@ def get_accuracy(model, loader, device, pct_close=0.2):
         pred = torch.round(output, decimals=2)
         correct += (torch.abs(pred-targets.view_as(pred)) <= torch.abs(pct_close * targets.view_as(pred))).sum().item()
         total += data.shape[0]
-    return correct / total
+    return round(correct / total, 4)
 
 
 def get_error_measures(model, loader, device, print_e=False):

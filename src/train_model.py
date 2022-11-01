@@ -1,7 +1,7 @@
 import torch.nn as nn
 from torch import optim
 from tqdm import trange
-from src.error_measures import get_accuracy
+from src.error_measures import get_accuracy, get_error_measures
 
 
 def prepare_optimizer(model, lr=1e-3):
@@ -26,7 +26,8 @@ def training_loop(model, train_loader, valid_loader, device, num_epochs=50, lr=1
             loss.backward()  # Gradient calculation
             optimizer.step()  # Weight update
 
-        if validation and epoch % 5 == 0:
-            print(f'Accuracy: {get_accuracy(model, valid_loader, device=device, pct_close=0.2)*100}%')
+        if validation and epoch % 3 == 0:
+            get_error_measures(model, valid_loader, device=device, print_e=True)
 
-    print(f'Accuracy on validation dataset: {get_accuracy(model, valid_loader, device=device, pct_close=0.2)*100}%')
+    print(f'Accuracy on validation dataset: '
+          f'{get_accuracy(model, valid_loader, device=device, pct_close=0.25)*100}%')

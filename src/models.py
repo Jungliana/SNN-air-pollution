@@ -19,12 +19,12 @@ class TwoLayerPerceptron(nn.Module):
 
 
 class TwoLayerLeaky(nn.Module):
-    def __init__(self, num_inputs, num_hidden, num_outputs, beta=0.95, num_steps=25):
+    def __init__(self, num_inputs, num_hidden, num_outputs, num_steps=25):
         super().__init__()
         self.num_steps = num_steps
 
         self.fc1 = nn.Linear(num_inputs, num_hidden)
-        self.lif = snn.Leaky(beta=beta)
+        self.lif = snn.Leaky(beta=0.95)
         self.fc2 = nn.Linear(num_hidden, num_outputs)
 
     def forward(self, x):
@@ -38,12 +38,12 @@ class TwoLayerLeaky(nn.Module):
 
 
 class TwoLayerSynaptic(nn.Module):
-    def __init__(self, num_inputs, num_hidden, num_outputs, beta=0.85, num_steps=100):
+    def __init__(self, num_inputs, num_hidden, num_outputs, num_steps=100):
         super().__init__()
         self.num_steps = num_steps
 
         self.fc1 = nn.Linear(num_inputs, num_hidden)
-        self.lif = snn.Synaptic(alpha=0.9, beta=beta)
+        self.lif = snn.Synaptic(alpha=0.9, beta=0.85)
         self.fc2 = nn.Linear(num_hidden, num_outputs)
 
     def forward(self, x):
@@ -57,15 +57,15 @@ class TwoLayerSynaptic(nn.Module):
 
 
 class ThreeLayerLeaky(nn.Module):
-    def __init__(self, num_inputs, num_hidden, num_outputs, beta=0.95, num_steps=25):
+    def __init__(self, num_inputs, num_hidden, num_outputs, num_steps=25):
         super().__init__()
         self.num_steps = num_steps
 
         self.lin1 = nn.Linear(num_inputs, num_hidden)
+        self.lif = snn.Leaky(beta=0.95)
+        self.lin2 = nn.Linear(num_hidden, num_hidden)
         self.bn1 = nn.BatchNorm1d(num_hidden)
         self.relu = nn.LeakyReLU()
-        self.lin2 = nn.Linear(num_hidden, num_hidden)
-        self.lif = snn.Leaky(beta=beta)
         self.lin3 = nn.Linear(num_hidden, num_outputs)
 
     def forward(self, x):
@@ -73,10 +73,10 @@ class ThreeLayerLeaky(nn.Module):
 
         for step in range(self.num_steps):
             cur1 = self.lin1(x)
-            cur1 = self.bn1(cur1)
-            cur1 = self.relu(cur1)
-            cur2 = self.lin2(cur1)
-            spk, mem = self.lif(cur2, mem)
-            cur3 = self.lin3(spk)
+            spk, mem = self.lif(cur1, mem)
+            cur2 = self.lin2(spk)
+            cur2 = self.bn1(cur2)
+            cur2 = self.relu(cur2)
+            cur3 = self.lin3(cur2)
 
         return cur3
