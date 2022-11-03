@@ -60,4 +60,4 @@ def calculate_MAE(targets, preds):
 
 
 def print_measures(mae, mse, rmse, index):
-    print(f'MAE: {mae}, MSE:{mse},\nRMSE: {rmse}, Index of Agreement: {index}')
+    print(f'MAE: {mae}, MSE:{mse},\nRMSE: {rmse}, IA: {index}')
