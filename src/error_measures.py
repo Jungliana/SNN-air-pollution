@@ -22,9 +22,10 @@ def get_error_measures(model, loader, device, print_e=False):
     index = calculate_index_of_agreement(targets, preds)
     mse, rmse = calculate_MSE_RMSE(targets, preds)
     mae = calculate_MAE(targets, preds)
+    mape = calculate_MAPE(targets, preds)
     if print_e:
-        print_measures(mae, mse, rmse, index)
-    return mae, mse, rmse, index
+        print_measures(mae, mse, rmse, index, mape)
+    return mae, mse, rmse, index, mape
 
 
 def gather_predictions(model, loader, device):
@@ -59,5 +60,22 @@ def calculate_MAE(targets, preds):
     return np.abs(targets-preds).mean()
 
 
-def print_measures(mae, mse, rmse, index):
-    print(f'MAE: {mae}, MSE:{mse},\nRMSE: {rmse}, IA: {index}')
+def calculate_MAPE(targets, preds):
+    return np.abs((targets-preds)/targets).mean() * 100
+
+
+def print_measures(mae, mse, rmse, index, mape):
+    print(f'MAE: {mae}, MSE:{mse},\nRMSE: {rmse}, IA: {index}, MAPE: {mape}%')
+
+
+def collect_stats(model, stat_list, loader, device):
+    results = get_error_measures(model, loader, device, print_e=False)
+    for i in range(len(results)):
+        stat_list[i] += results[i]
+    stat_list[-1] += get_accuracy(model, loader, device, pct_close=0.25)
+
+
+def print_average_stats(stat_list, trials):
+    print(f'MAE: {stat_list[0]/trials}, MSE:{stat_list[1]/trials},'
+          f'\nRMSE: {stat_list[2]/trials}, IA: {stat_list[3]/trials},'
+          f'\nMAPE: {stat_list[4]/trials} %, acc: {(stat_list[5]/trials)*100} %\n')

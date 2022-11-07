@@ -24,16 +24,17 @@ class LeakySNN(nn.Module):
         self.spike_grad = surrogate.fast_sigmoid()
 
         self.fc1 = nn.Linear(num_inputs, num_hidden)
-        self.lif = snn.Leaky(beta=0.9, learn_beta=True, spike_grad=self.spike_grad)
+        self.lif = snn.Leaky(beta=0.9, threshold=1., learn_beta=True,
+                             learn_threshold=True, spike_grad=self.spike_grad)
         self.fc2 = nn.Linear(num_hidden, num_outputs)
 
     def forward(self, x):
         mem = self.lif.init_leaky()
 
+        spk = self.fc1(x)
         for step in range(self.num_steps):
-            cur1 = self.fc1(x)
-            spk, mem = self.lif(cur1, mem)
-            cur2 = self.fc2(spk)
+            spk, mem = self.lif(spk, mem)
+        cur2 = self.fc2(spk)
         return cur2
 
 
@@ -44,16 +45,17 @@ class SynapticSNN(nn.Module):
         self.spike_grad = surrogate.fast_sigmoid()
 
         self.fc1 = nn.Linear(num_inputs, num_hidden)
-        self.lif = snn.Synaptic(alpha=0.9, beta=0.85, learn_beta=True, spike_grad=self.spike_grad)
+        self.lif = snn.Synaptic(alpha=0.9, beta=0.85, threshold=1., learn_beta=True,
+                                learn_threshold=True, spike_grad=self.spike_grad)
         self.fc2 = nn.Linear(num_hidden, num_outputs)
 
     def forward(self, x):
         syn, mem = self.lif.init_synaptic()
 
+        spk = self.fc1(x)
         for step in range(self.num_steps):
-            cur1 = self.fc1(x)
-            spk, syn, mem = self.lif(cur1, syn, mem)
-            cur2 = self.fc2(spk)
+            spk, syn, mem = self.lif(spk, syn, mem)
+        cur2 = self.fc2(spk)
         return cur2
 
 
@@ -64,18 +66,19 @@ class DoubleLeakySNN(nn.Module):
         self.spike_grad = surrogate.fast_sigmoid()
 
         self.lin1 = nn.Linear(num_inputs, num_hidden)
-        self.lif1 = snn.Leaky(beta=0.9, learn_beta=True, spike_grad=self.spike_grad)
-        self.lif2 = snn.Leaky(beta=0.9, learn_beta=True, spike_grad=self.spike_grad)
+        self.lif1 = snn.Leaky(beta=0.9, threshold=1., learn_beta=True,
+                              learn_threshold=True, spike_grad=self.spike_grad)
+        self.lif2 = snn.Leaky(beta=0.9, threshold=1., learn_beta=True,
+                              learn_threshold=True, spike_grad=self.spike_grad)
         self.lin2 = nn.Linear(num_hidden, num_outputs)
 
     def forward(self, x):
         mem1 = self.lif1.init_leaky()
         mem2 = self.lif2.init_leaky()
 
+        spk1 = self.lin1(x)
         for step in range(self.num_steps):
-            cur1 = self.lin1(x)
-            spk1, mem1 = self.lif1(cur1, mem1)
-            spk2, mem2 = self.lif2(spk1, mem2)
-            cur2 = self.lin2(spk2)
-
+            spk2, mem1 = self.lif1(spk1, mem1)
+            spk1, mem2 = self.lif2(spk2, mem2)
+        cur2 = self.lin2(spk1)
         return cur2

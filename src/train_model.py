@@ -10,9 +10,9 @@ def prepare_optimizer(model, lr=1e-3):
 
 
 def training_loop(model, train_loader, valid_loader, device, num_epochs=50, lr=1e-3, validation=False):
+    model.to(device)  # move model to GPU
     optimizer = prepare_optimizer(model, lr)
     loss_fun = nn.MSELoss()
-    model.to(device)  # move model to GPU
 
     for epoch in trange(num_epochs):
         model.train()
@@ -26,7 +26,7 @@ def training_loop(model, train_loader, valid_loader, device, num_epochs=50, lr=1
             loss.backward()  # Gradient calculation
             optimizer.step()  # Weight update
 
-        if validation and epoch % 3 == 0:
+        if validation:
             get_error_measures(model, valid_loader, device=device, print_e=True)
 
     print(f'Accuracy on validation dataset: '
