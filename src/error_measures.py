@@ -65,7 +65,8 @@ def calculate_MAPE(targets, preds):
 
 
 def print_measures(mae, mse, rmse, index, mape):
-    print(f'MAE: {mae}, MSE:{mse},\nRMSE: {rmse}, IA: {index}, MAPE: {mape}%')
+    print(f'MAE: {"{:.4f}".format(mae)}, MSE:{"{:.4f}".format(mse)},'
+          f'\nRMSE: {"{:.4f}".format(rmse)}, IA: {"{:.4f}".format(index)}, MAPE: {"{:.4f}".format(mape)}%')
 
 
 def collect_stats(model, stat_list, loader, device):
