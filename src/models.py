@@ -3,17 +3,21 @@ import snntorch as snn
 from snntorch import surrogate
 
 
-class SimpleANN(nn.Module):
+class MultiLayerANN(nn.Module):
     def __init__(self, num_inputs, num_hidden, num_outputs=1):
         super().__init__()
         self.lin1 = nn.Linear(num_inputs, num_hidden)
+        self.sigmoid = nn.Sigmoid()
+        self.lin2 = nn.Linear(num_hidden, num_hidden)
         self.relu = nn.LeakyReLU()
-        self.lin2 = nn.Linear(num_hidden, num_outputs)
+        self.lin3 = nn.Linear(num_hidden, num_outputs)
 
     def forward(self, x):
         x = self.lin1(x)
-        x = self.relu(x)
+        x = self.sigmoid(x)
         x = self.lin2(x)
+        x = self.relu(x)
+        x = self.lin3(x)
         return x
 
 
