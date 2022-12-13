@@ -1,3 +1,4 @@
+from torch import full, float32
 import torch.nn as nn
 import snntorch as snn
 from snntorch import surrogate
@@ -26,21 +27,22 @@ class LeakySNN(nn.Module):
         super().__init__()
         self.num_steps = num_steps
         self.spike_grad = surrogate.fast_sigmoid()
+        self.thr = full([num_hidden], 1., dtype=float32)
 
-        self.fc1 = nn.Linear(num_inputs, num_hidden)
-        self.lif = snn.Leaky(beta=0.9, threshold=1., learn_beta=True,
+        self.lin1 = nn.Linear(num_inputs, num_hidden)
+        self.lif = snn.Leaky(beta=0.9, threshold=self.thr, learn_beta=True,
                              learn_threshold=True, spike_grad=self.spike_grad)
-        self.fc2 = nn.Linear(num_hidden, num_outputs)
+        self.lin2 = nn.Linear(num_hidden, num_outputs)
 
     def forward(self, x):
         mem = self.lif.init_leaky()
 
-        x1 = self.fc1(x)
+        x1 = self.lin1(x)
         spk_sum, mem = self.lif(x1, mem)
         for step in range(self.num_steps-1):
             spk, mem = self.lif(x1, mem)
             spk_sum += spk
-        x2 = self.fc2(spk_sum)
+        x2 = self.lin2(spk_sum)
         return x2
 
 
@@ -49,21 +51,22 @@ class SynapticSNN(nn.Module):
         super().__init__()
         self.num_steps = num_steps
         self.spike_grad = surrogate.fast_sigmoid()
+        self.thr = full([num_hidden], 1., dtype=float32)
 
-        self.fc1 = nn.Linear(num_inputs, num_hidden)
-        self.lif = snn.Synaptic(alpha=0.9, beta=0.85, threshold=1., learn_beta=True,
+        self.lin1 = nn.Linear(num_inputs, num_hidden)
+        self.lif = snn.Synaptic(alpha=0.9, beta=0.85, threshold=self.thr, learn_beta=True,
                                 learn_threshold=True, spike_grad=self.spike_grad)
-        self.fc2 = nn.Linear(num_hidden, num_outputs)
+        self.lin2 = nn.Linear(num_hidden, num_outputs)
 
     def forward(self, x):
         syn, mem = self.lif.init_synaptic()
 
-        x1 = self.fc1(x)
+        x1 = self.lin1(x)
         spk_sum, syn, mem = self.lif(x1, syn, mem)
         for step in range(self.num_steps-1):
             spk, syn, mem = self.lif(x1, syn, mem)
             spk_sum += spk
-        x2 = self.fc2(spk_sum)
+        x2 = self.lin2(spk_sum)
         return x2
 
 
@@ -72,11 +75,13 @@ class DoubleLeakySNN(nn.Module):
         super().__init__()
         self.num_steps = num_steps
         self.spike_grad = surrogate.fast_sigmoid()
+        self.thr1 = full([num_hidden], 1., dtype=float32)
+        self.thr2 = full([num_hidden], 1., dtype=float32)
 
         self.lin1 = nn.Linear(num_inputs, num_hidden)
-        self.lif1 = snn.Leaky(beta=0.9, threshold=1., learn_beta=True,
+        self.lif1 = snn.Leaky(beta=0.9, threshold=self.thr1, learn_beta=True,
                               learn_threshold=True, spike_grad=self.spike_grad)
-        self.lif2 = snn.Leaky(beta=0.9, threshold=1., learn_beta=True,
+        self.lif2 = snn.Leaky(beta=0.9, threshold=self.thr2, learn_beta=True,
                               learn_threshold=True, spike_grad=self.spike_grad)
         self.lin2 = nn.Linear(num_hidden, num_outputs)
 
