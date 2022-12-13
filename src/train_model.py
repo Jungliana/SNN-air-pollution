@@ -30,10 +30,11 @@ def training_loop(model, train_loader, device, num_epochs=50, lr=1e-3):
 
 
 def training_loop_stats(model, train_loader, valid_loader, device, num_epochs=50, lr=1e-3,
-                        validation=False, collect=False):
+                        validation=False, collect_time=False):
     model.to(device)  # move model to GPU
     optimizer, scheduler = prepare_optimizer(model, lr)
     loss_fun = nn.MSELoss()
+    times = []
 
     with tqdm(range(num_epochs)) as t:
         for epoch in t:
@@ -52,9 +53,8 @@ def training_loop_stats(model, train_loader, valid_loader, device, num_epochs=50
             if validation:
                 get_error_measures(model, valid_loader, device=device, print_e=True)
 
-            if collect:
+            if collect_time:
                 elapsed = t.format_dict["elapsed"]
-                print(elapsed)
+                times.append(elapsed)
 
-    print(f'Accuracy on validation dataset: '
-          f'{get_accuracy(model, valid_loader, device=device, pct_close=0.25)*100}%')
+    return times
