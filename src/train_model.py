@@ -29,11 +29,13 @@ def training_loop(model, train_loader, device, num_epochs=50, lr=1e-3):
         scheduler.step()
 
 
-def training_loop_stats(model, train_loader, valid_loader, device, num_epochs=50, lr=1e-3,
-                        validation=False, collect_time=False):
+def training_loop_stats(model, train_loader, test_loader, device, num_epochs=50, lr=1e-3,
+                        collect_stats=False, collect_time=False):
     model.to(device)  # move model to GPU
     optimizer, scheduler = prepare_optimizer(model, lr)
     loss_fun = nn.MSELoss()
+    stats = [[], [], [], [], []]
+    acc = []
     times = []
 
     with tqdm(range(num_epochs)) as t:
@@ -50,11 +52,14 @@ def training_loop_stats(model, train_loader, valid_loader, device, num_epochs=50
                 optimizer.step()  # Weight update
             scheduler.step()
 
-            if validation:
-                get_error_measures(model, valid_loader, device=device, print_e=True)
+            if collect_stats:
+                errors = get_error_measures(model, test_loader, device=device, print_e=False)  # mae, mse, rmse, ia, mape
+                for i, err in enumerate(errors):
+                    stats[i].append(err)
+                acc.append(get_accuracy(model, test_loader, device))
 
             if collect_time:
                 elapsed = t.format_dict["elapsed"]
                 times.append(elapsed)
-
-    return times
+    stats.append(acc)
+    return stats, times
