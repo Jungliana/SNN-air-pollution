@@ -11,6 +11,7 @@ def prepare_optimizer(model, lr=1e-3):
     return optimizer, scheduler
 
 
+# Lighter loop without additional conditions
 def training_loop(model, train_loader, device, num_epochs=50, lr=1e-3):
     model.to(device)  # move model to GPU
     optimizer, scheduler = prepare_optimizer(model, lr)
@@ -46,14 +47,13 @@ def training_loop_stats(model, train_loader, test_loader, device, num_epochs=50,
 
                 preds = model(data).squeeze(dim=1)
                 loss = loss_fun(preds, targets)
-
                 optimizer.zero_grad()
                 loss.backward()  # Gradient calculation
                 optimizer.step()  # Weight update
             scheduler.step()
 
             if collect_stats:
-                errors = get_error_measures(model, test_loader, device=device, print_e=False)  # mae, mse, rmse, ia, mape
+                errors = get_error_measures(model, test_loader, device=device, print_e=False)
                 for i, err in enumerate(errors):
                     stats[i].append(err)
                 acc.append(get_accuracy(model, test_loader, device))
